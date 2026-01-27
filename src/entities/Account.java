@@ -4,7 +4,7 @@ public class Account {
 
     private Integer number;
     private String holder;
-    private Double balance = 0.0;
+    protected Double balance = 0.0;
 
     public Account(){
     }
