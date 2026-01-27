@@ -2,14 +2,14 @@ package entities;
 
 public class Account {
 
-    private Integer number;
+    private String number;
     private String holder;
     protected Double balance = 0.0;
 
     public Account(){
     }
 
-    public Account(Integer number, String holder, Double firstDeposit){
+    public Account(String number, String holder, Double firstDeposit){
         this.number = number;
         this.holder = holder;
         this.balance += firstDeposit;
@@ -26,10 +26,10 @@ public class Account {
         this.holder = holder;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
