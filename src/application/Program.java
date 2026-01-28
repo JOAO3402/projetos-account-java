@@ -3,6 +3,7 @@ package application;
 import java.util.Scanner;
 import entities.Account;
 import entities.BusinessAccount;
+import entities.SavingsAccount;
 
 public class Program {
 
@@ -13,7 +14,8 @@ public class Program {
         System.out.println("Qual tipo de conta deseja criar?");
         System.out.println("1 - Conta Normal");
         System.out.println("2 - Conta Empresarial");
-        System.out.print("Escolha uma opção (1 ou 2): ");
+        System.out.println("3 - Conta Poupança");
+        System.out.print("Escolha uma opção (1, 2 ou 3): ");
         int opcao = Integer.parseInt(sc.nextLine());
         
         System.out.print("Número da conta: ");
@@ -42,6 +44,15 @@ public class Program {
             BusinessAccount businessAccount = new BusinessAccount(number, holder, firstDeposit, loanLimit);
             exibirDetalhesBusinessAccount(businessAccount);
             menuOperacoesBaccount(sc, businessAccount);
+        } else if(opcao == 3){
+            double iRate  = 5.0;
+            System.out.println("Taxa de juros padrão para Conta Poupança: " + String.format("%.2f%%", iRate));
+
+            SavingsAccount savingsAccount = new SavingsAccount(number, holder, firstDeposit, iRate);
+            savingsAccount.updateBalance();
+
+            exibirDetalhesSavingsAccount(savingsAccount);
+            menuOperacoesSaccount(sc, savingsAccount);
         } else {
             System.out.println("Opção inválida!");
         }
@@ -65,6 +76,15 @@ public class Program {
         System.out.println("Saldo: R$ " + String.format("%.2f", account.getBalance()));
         System.out.println("Limite de Empréstimo: R$ " + String.format("%.2f", account.getLoanLimit()));
     }
+
+    public static void exibirDetalhesSavingsAccount(entities.SavingsAccount account) {
+        System.out.println("\n=== Conta Criada com Sucesso ===");
+        System.out.println("Tipo: Conta Poupança");
+        System.out.println("Número: " + account.getNumber());
+        System.out.println("Titular: " + account.getHolder());
+        System.out.println("Saldo: R$ " + String.format("%.2f", account.getBalance()));
+        System.out.println("Taxa de Juros: " + String.format("%.2f%%", account.getInterestRate()));
+    }
     
     public static void menuOperacoesAccount(Scanner sc, Account account) {
         boolean continuar = true;
@@ -81,7 +101,7 @@ public class Program {
             switch (operacao) {
                 case 1:
                     System.out.print("Valor a depositar: R$ ");
-                    Double deposito = Double.parseDouble(sc.nextLine());
+                    double deposito = Double.parseDouble(sc.nextLine());
                     if (deposito > 0) {
                         account.deposit(deposito);
                         System.out.println("Depósito realizado com sucesso!");
@@ -93,7 +113,7 @@ public class Program {
 
                 case 2:
                     System.out.print("Valor a sacar: R$ ");
-                    Double saque = Double.parseDouble(sc.nextLine());
+                    double saque = Double.parseDouble(sc.nextLine());
                     if (saque > 0 && saque <= account.getBalance()) {
                         account.withdraw(saque);
                         System.out.println("Saque realizado com sucesso!");
@@ -137,7 +157,7 @@ public class Program {
             switch (operacao) {
                 case 1:
                     System.out.print("Valor a depositar: R$ ");
-                    Double deposito = Double.parseDouble(sc.nextLine());
+                    double deposito = Double.parseDouble(sc.nextLine());
                     if (deposito > 0) {
                         account.deposit(deposito);
                         System.out.println("Depósito realizado com sucesso!");
@@ -150,7 +170,7 @@ public class Program {
 
                 case 2:
                     System.out.print("Valor a sacar: R$ ");
-                    Double saque = Double.parseDouble(sc.nextLine());
+                    double saque = Double.parseDouble(sc.nextLine());
                     if (saque > 0 && saque <= account.getBalance()) {
                         account.withdraw(saque);
                         System.out.println("Saque realizado com sucesso!");
@@ -181,6 +201,61 @@ public class Program {
                     break;
 
                 case 5:
+                    System.out.println("\nObrigado por usar nosso banco! Até logo!");
+                    continuar = false;
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
+
+    public static void menuOperacoesSaccount(Scanner sc, SavingsAccount account) {
+        boolean continuar = true;
+
+        while (continuar) {
+            System.out.println("\n=== Menu de Operações ===");
+            System.out.println("1 - Depositar");
+            System.out.println("2 - Sacar");
+            System.out.println("3 - Ver Saldo");
+            System.out.println("4 - Sair");
+            System.out.print("Escolha uma opção: ");
+            int operacao = Integer.parseInt(sc.nextLine());
+
+            switch (operacao) {
+                case 1:
+                    System.out.print("Valor a depositar: R$ ");
+                    double deposito = Double.parseDouble(sc.nextLine());
+                    if (deposito > 0) {
+                        account.deposit(deposito);
+                        System.out.println("Depósito realizado com sucesso!");
+                        System.out.println("Novo saldo: R$ " + String.format("%.2f", account.getBalance()));
+                    } else {
+                        System.out.println("Valor inválido!");
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Valor a sacar: R$ ");
+                    double saque = Double.parseDouble(sc.nextLine());
+                    if (saque > 0 && saque <= account.getBalance()) {
+                        account.withdraw(saque);
+                        System.out.println("Saque realizado com sucesso!");
+                        System.out.println("Novo saldo: R$ " + String.format("%.2f", account.getBalance()));
+                    } else if (saque > account.getBalance()) {
+                        System.out.println("Saldo insuficiente!");
+                    } else {
+                        System.out.println("Valor inválido!");
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("\nSaldo atual: R$ " + String.format("%.2f", account.getBalance()));
+                    break;
+
+
+                case 4:
                     System.out.println("\nObrigado por usar nosso banco! Até logo!");
                     continuar = false;
                     break;
