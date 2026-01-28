@@ -13,6 +13,6 @@ public class Program4 {
         y.withdraw(50.0);
 
         System.out.println(x.getBalance());
-        System.out.println(y.getBalance());--
+        System.out.println(y.getBalance());
     }
 }
